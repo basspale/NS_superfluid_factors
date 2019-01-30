@@ -1,4 +1,6 @@
-# Crosschecking fitting formulas of various superfluid reduction factors of nucleons.
+# Neucleon superfluid reduction factors
+
+Crosschecking fitting formulas of various superfluid reduction factors of nucleons.
 
 ## What is reduction factor?
 The thermal property of neutron star (NS) is greatly influenced by the nucleon (neutron and/or proton) superfluidity, which makes energy gap above the Fermi surface.
