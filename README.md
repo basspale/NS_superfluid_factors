@@ -8,7 +8,7 @@ The thermal property of neutron star (NS) is greatly influenced by the nucleon (
 The main effects are
 - Reduction of specific heat
 
-- Reduction of emissivity of modified Urca procss (and of direct Urca process for vary massive NSs)
+- Reduction of emissivity of modified Urca procss (and of direct Urca process for very massive NSs)
 
 These are calculated and summarized as simple fitting functions in the literature.
 
@@ -40,3 +40,5 @@ In integrating over the angle, I use simple trapezoidal rule.
 - [Yakovlev et al., 1999](http://mr.crossref.org/iPage?doi=10.1070%2FPU1999v042n08ABEH000556)
 
 - [Levenfish et al., 1994](http://ads.nao.ac.jp/abs/1994AstL...20...43L)
+
+- [Gusakov, 2002](http://www.aanda.org/10.1051/0004-6361:20020602)
