@@ -10,12 +10,13 @@ Reduction factor is named I{n,p}_SF{n,p}{n,p}, meaning that
 - SFnp: both proton and neutron are superfluid.
 """
 
-export In_SFp, Ip_SFp, In_SFn, Ip_SFn, In_SFnp, Ip_SFnp
+export In_SFp, Ip_SFp, In_SFn, Ip_SFn, In_SFnp, Ip_SFnp, Itilde_p_SFnp
 
 using FastGaussQuadrature
 #using Dierckx
 
 f(x::Float64) = 1.0/(exp(x)+1.0)
+pre_nodes, pre_weights = gausslaguerre(1000)
 
 """
 Both proton and neutron superfluidity
@@ -32,6 +33,7 @@ function integrand_In_SFnp(tnu::Float64, tn::Float64, tp::Float64, tn1::Float64,
     Sp = xi + yn + sqrt(2*yp) +yn1 + yn2
     Sn1 = xi + yn + yp + sqrt(2*yn1) + yn2
     Sn2 = xi + yn + yp + yn1 + sqrt(2*yn2)
+
     xnu = Snu*tnu
     xn = Sn*tn
     xp = Sp*tp
@@ -61,12 +63,13 @@ function integrand_Ip_SFnp(tnu::Float64, tn::Float64, tp::Float64, tp1::Float64,
     Sp = xi + yn + sqrt(2*yp) + 2*yp
     Sp1 = xi + yn + sqrt(2*yp) + 2*yp
     Sp2 = xi + yn + sqrt(2*yp) + 2*yp
-    xnu = Snu*tnu
-    xn = Sn*tn
-    xp = Sp*tp
-    xp1 = Sp1*tp1
-    xp2 = Sp2*tp2
-    J = Snu*Sn*Sp*Sp1*Sp2
+
+    xnu = Snu*(exp(tnu) - 1)
+    xn = Sn*(exp(tn) - 1)
+    xp = Sp*(exp(tp)-1)
+    xp1 = Sp1*(exp(tp1)-1)
+    xp2 = Sp2*(exp(tp2)-1)
+    J = Snu*Sn*Sp*Sp1*Sp2*exp(tnu+tn+tp+tp1+tp2)
     
     zn = sqrt(xn^2 + yn^2)
     zp = sqrt(xp^2 + yp^2)
@@ -80,7 +83,8 @@ function integrand_Ip_SFnp(tnu::Float64, tn::Float64, tp::Float64, tp1::Float64,
     return [prefactor * integrand_tmp_rate, prefactor * integrand_tmp_emis]
 end
 
-function In_SFnp(vn::Float64, vp::Float64, xi::Float64, n::Int64)
+function In_SFnp(vn::Float64, vp::Float64, xi::Float64, n::Int64, h1::Float64, h2::Float64)
+
     nodes, weights = gausslaguerre(n)
     
     ctns = [0.0, 0.5, 1.0]
