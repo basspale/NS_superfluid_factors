@@ -36,7 +36,7 @@ open("../output_data/murca_n_vp_over_xi.dat", "w") do f
     writedlm(f, vp_xis, " ")
 end
 
-xis = exp10.(0:0.1:2)
+logxis = 0.5:0.1:1.2
 n = 10
 for logxi in logxis
     @show logxi

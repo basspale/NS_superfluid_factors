@@ -16,43 +16,44 @@ end
 
 
 """
-Proton branch
+Neutron branch
 """
 
 # define vN/xi
 length1 = 20
 length2 = 20
-vn_xis = range(0, stop=1.0, length=length1)
+vn_xis = range(0, stop=1/3.0, length=length1)
 vn_xis = vcat(vn_xis, range(vn_xis[end]+vn_xis[2]-vn_xis[1], stop=10., length=length2))
-vp_xis = range(0, stop=1.0/3.0, length=length1)
+vp_xis = range(0, stop=1.0, length=length1)
 vp_xis = vcat(vp_xis, range(vp_xis[end]+vp_xis[2]-vp_xis[1], stop=10., length=length2))
 
 # Store vN/xi
-open("../output_data/murca_p_vn_over_xi.dat", "w") do f
+open("../output_data/murca_n_vn_over_xi.dat", "w") do f
     writedlm(f, vn_xis, " ")
 end
 
-open("../output_data/murca_p_vp_over_xi.dat", "w") do f
+open("../output_data/murca_n_vp_over_xi.dat", "w") do f
     writedlm(f, vp_xis, " ")
 end
 
-logxis = 0:0.1:2
+#logxis = 0:0.1:2
+logxis = 2:-0.1:1.3
 n = 10
 for logxi in logxis
     @show logxi
     xi = exp10(logxi)
 
     # Rate
-    res_tmp = map(vn_xi->map(vp_xi->Irate_p_SFnp(vn_xi * xi, vp_xi * xi, xi, n) / HM(xi), vp_xis), vn_xis)
+    res_tmp = map(vn_xi->map(vp_xi->Irate_n_SFnp(vn_xi * xi, vp_xi * xi, xi, n) / HM(xi), vp_xis), vn_xis)
     res_tmp = hcat(res_tmp...) # M[i,j], i=neutron gap, j=proton gap
-    open("../output_data/Rrate_murca_p_SFnp_nonzeroT_logxi_$(logxi).dat", "w") do f
+    open("../output_data/Rrate_murca_n_SFnp_nonzeroT_logxi_$(logxi).dat", "w") do f
         writedlm(f, res_tmp, " ")
     end
 
     # Emissivity
-    res_tmp = map(vn_xi->map(vp_xi->Iemis_p_SFnp(vn_xi * xi, vp_xi * xi, xi, n) / FM(xi), vp_xis), vn_xis)
+    res_tmp = map(vn_xi->map(vp_xi->Iemis_n_SFnp(vn_xi * xi, vp_xi * xi, xi, n) / FM(xi), vp_xis), vn_xis)
     res_tmp = hcat(res_tmp...) # M[i,j], i=neutron gap, j=proton gap
-    open("../output_data/Remis_murca_p_SFnp_nonzeroT_logxi_$(logxi).dat", "w") do f
+    open("../output_data/Remis_murca_n_SFnp_nonzeroT_logxi_$(logxi).dat", "w") do f
         writedlm(f, res_tmp, " ")
     end
 end

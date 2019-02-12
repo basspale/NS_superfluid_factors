@@ -132,7 +132,7 @@ function integrand_Irate_p_SFnp(tnu::Float64, tn::Float64, tp::Float64, tp1::Flo
 end
 
 function Iemis_n_SFnp(vn::Float64, vp::Float64, xi::Float64, n::Int64)
-    nodes, weights = gausslaguerre(maxn)
+    nodes, weights = gausslaguerre(n)
     
     ctns = [0.0, 0.5, 1.0]
     phi1s = [0.0, pi, 2*pi]
@@ -148,7 +148,7 @@ function Iemis_n_SFnp(vn::Float64, vp::Float64, xi::Float64, n::Int64)
             yn1 = vn*sqrt(1+3*ctn1^2)
             yn2 = vn*sqrt(1+3*ctn2^2)
             integ_tmp = 0.0
-            for inu=1:minn, i1=1:minn, i2=1:minn, i3=1:minn, i4=1:minn
+            for inu=1:n, i1=1:n, i2=1:n, i3=1:n, i4=1:n
                 xnu, x1, x2, x3, x4 = nodes[[inu, i1, i2, i3, i4]]
                 wnu, w1, w2, w3, w4 = weights[[inu, i1, i2, i3, i4]]
                 integ_tmp += (wnu*w1*w2*w3*w4 * exp(xnu+x1+x2+x3+x4)) * integrand_Iemis_n_SFnp(xnu, x1, x2, x3, x4, yn, yp, yn1, yn2,xi) / (2*pi)
