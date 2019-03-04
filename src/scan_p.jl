@@ -37,7 +37,7 @@ open("../output_data/murca_p_vp_over_xi.dat", "w") do f
 end
 
 logxis = 0:0.1:2
-n = 10
+n = 15
 for logxi in logxis
     @show logxi
     xi = exp10(logxi)
