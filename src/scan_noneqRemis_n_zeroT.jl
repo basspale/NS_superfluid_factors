@@ -20,35 +20,62 @@ ysize, = size(dp)
 
 Rs = zeros(ysize,xsize)
 
-for iy in 1:ysize
-    for ix in 1:xsize
-        Rs[iy,ix] = In_emis_SFnp_trp(dn[ix], dp[iy], xi, 10, 10) / FM(xi)
-    end
-    println(iy, ", ")
-end
+# for iy in 1:ysize
+#     for ix in 1:xsize
+#         Rs[iy,ix] = In_emis_SFnp_trp(dn[ix], dp[iy], xi, 10, 10) / FM(xi)
+#     end
+#     println(iy, ", ")
+# end
 
-open("Remis_murca_n_xarray.dat", "w") do f
-    println(f, "#range of x (neutron gap over xi)")
-    for ix in 1:xsize
-        print(f, dn[ix]/xi, " ")
-    end
-end
+# # Column
+# open("Remis_murca_n_xarray.dat", "w") do f
+#     println(f, "#range of x (neutron gap over xi)")
+#     for ix in 1:xsize
+#         print(f, dn[ix]/xi, " ")
+#     end
+# end
 
-open("Remis_murca_n_yarray.dat", "w") do f
-    println(f, "#range of y (proton gap over xi)")
+# # Row
+# open("Remis_murca_n_yarray.dat", "w") do f
+#     println(f, "#range of y (proton gap over xi)")
+#     for iy in 1:ysize
+#         print(f, dp[iy]/xi, " ")
+#     end
+# end
+
+# open("Remis_murca_n.dat", "w") do f
+#     println(f, "#RnEmis [x:ngap, y:pgap]")
+#     for ix in 1:xsize
+#         for iy in 1:ysize
+#             print(f, Rs[iy,ix], " ")
+#         end
+#         print(f, "\n")
+#     end
+# end
+
+# Add
+ddn = dn[2]-dn[1]
+Rtemp = zeros(ysize)
+
+for n in 1:100
+    dn0 = dn[end] + n*ddn
+    @show n, dn0, xi
     for iy in 1:ysize
-        print(f, dp[iy]/xi, " ")
+        Rtemp[iy] = In_emis_SFnp_trp(dn0, dp[iy], xi, 10, 10) / FM(xi)
     end
-end
 
-open("Remis_murca_n.dat", "w") do f
-    println(f, "#RnEmis [x:ngap, y:pgap]")
-    for ix in 1:xsize
+    open("../output_data/Remis_murca_n_xarray.dat", "a") do f
+        print(f, dn0/xi, " ")
+    end
+
+    open("../output_data/Remis_murca_n.dat", "a") do f
         for iy in 1:ysize
-            print(f, Rs[iy,ix], " ")
+            print(f, Rtemp[iy], " ")
         end
         print(f, "\n")
     end
+
+    if dn0*3 > xi
+        break
+    end
 end
-
-
